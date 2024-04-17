@@ -26,6 +26,7 @@ urlpatterns = [
     # path('', domain_redirect, name='domain_redirect'),
     path('',views.IndexView.as_view(),name='index'),
     path("shop/", include("shop.urls")),
+    path('admin/', admin.site.urls),
 ]
 
 # serving static and media for development
