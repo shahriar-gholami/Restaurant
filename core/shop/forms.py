@@ -1,12 +1,12 @@
 from django import forms
-from django.forms import formset_factory
 from .models import Item
 
+class DynamicItemForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        super(DynamicItemForm, self).__init__(*args, **kwargs)
+        for item in Item.objects.all():
+            self.fields[f'{item.name}'] = forms.IntegerField(label=f'{item.name}')
 
-class ItemForm(forms.Form):
-    item = forms.CharField()
-    count = forms.IntegerField()
-
-ItemsFormSet = formset_factory(ItemForm)
-
+# مثال استفاده:
+# ایجاد یک فرم با 20 فیلد name
 

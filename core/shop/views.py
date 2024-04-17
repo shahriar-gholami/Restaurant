@@ -3,10 +3,9 @@ from django.views import View
 import random
 from random import randint
 from .models import *
-from .forms import ItemForm
+from .forms import DynamicItemForm
 from django.forms import formset_factory
-from django.shortcuts import render
-from django.views import View
+
 
 
 
@@ -44,16 +43,16 @@ class IndexView(View):
 
 class NewOrderItemsView(View):
 	items_count = Item.objects.all().count()
-	ItemsFormSet = formset_factory(ItemForm, extra=items_count)
 
 	def get(self, request, *args, **kwargs):
+
+		form = DynamicItemForm
 		items = Item.objects.all()
-		formset = self.ItemsFormSet()
-		return render(request, 'shop/menu.html', {'formset': formset,'items':items})
+		return render(request, 'shop/menu.html', {'form': form,'items':items})
 
 	def post(self, request, *args, **kwargs):
-		formset = self.ItemsFormSet(request.POST)
-		if formset.is_valid():
-			print('yesssssssssssssssssssss')
+		form = DynamicItemForm(request.POST)
+		if form.is_valid():
+			print(form.cleaned_data)
 
 

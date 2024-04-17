@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 <!doctype html>
 <html dir="rtl" lang="fa-IR">
 
@@ -43,14 +44,8 @@
 <body class="app sidebar-mini rtl login-img">
 
     <div class="">
-
-   
-
-        <!-- PAGE -->
         <div class="page">
             <div class="">
-    
-                <!-- CONTAINER OPEN -->
                 <div class="col col-login mx-auto mt-7">
                     <div class="text-center">
                         <img alt="" class="header-brand-img m-0" src="{{ store.get_logo_image }}" height="85px">
@@ -60,46 +55,46 @@
                     <div class="wrap-login100 p-6">
                         <span class="login100-form-title">لیست آیتم‌های موجود</span>
                         <div class="table-responsive">
-                            <form method="post" action="{% url 'shop:order_items' %}"> 
-                            <table class="table table-bordered" >
+                            <form method="post" action="{% url 'shop:order_items' %}" enctype="multipart/form-data"> 
+                                <table class="table table-bordered" >
+                                {% csrf_token %}
                                 <thead>
-                                <tr>
-                                    <th>عنوان<span class="text text-white"></span></th>
-                                    <th>قیمت<span class="text text-white"></span></th>                  
-                                    <th>تعداد<span class="text text-white"></span></th>
-                                </tr>
+                                    <tr>
+                                        <th>عنوان<span class="text text-white"></span></th>
+                                        <th>قیمت<span class="text text-white"></span></th>                  
+                                        <th>تعداد<span class="text text-white"></span></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    {% for form in formset %}
-                                    {% csrf_token %}
-                                        <tr>
-                                            {% for item in items %}
-                                                {% if forloop.parentloop.counter == forloop.counter %}
-                                                <td>
-                                                <input name="item" value="{{item.name}}" class="form-control" type="text">
-                                                </td>
-                                                <td class="align-middle">
-                                                {{item.price}}
-                                                </td>
-                                                {% endif %}
-                                            {% endfor %}
-                                            <td>
-                                                <div class="handle-counter" id="handleCounter4">
-                                                    <button class="counter-minus btn btn-white lh-2 shadow-none"
-                                                            type="button">
-                                                        <i class="fa fa-minus text-muted"></i>
-                                                    </button>
-                                                    <input name="count" class="qty" type="number" value="0">
-                                                    <button class="counter-plus btn btn-white lh-2 shadow-none"
-                                                            type="button">
-                                                        <i class="fa fa-plus text-muted"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}    
+                                {% for field in form %}
+                                <tr>
+                                    <td class="align-middle">{{ field.label }}</td>
+                                    <td class="align-middle">
+                                        {% for item in items %}
+                                            {% if item.name == field.label %}
+                                            {{ item.price|intcomma }} تومان
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                    <td>
+                                        <div class="handle-counter" id="handleCounter4">
+                                            <button class="counter-minus btn btn-white lh-2 shadow-none"
+                                                    type="button">
+                                                <i class="fa fa-minus text-muted"></i>
+                                            </button>
+                                            <input name="{{ field.label }}" class="qty" type="number" value="0">
+                                            <button class="counter-plus btn btn-white lh-2 shadow-none"
+                                                    type="button">
+                                                <i class="fa fa-plus text-muted"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
                                 </tbody>
-                            </table>
+                                </table>
+                               
+                          
                             <input type="submit" value="Submit">
                             </form>
                         </div>

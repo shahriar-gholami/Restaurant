@@ -26,7 +26,7 @@ class Item(models.Model):
 		return self.name
 
 class OrderItem(models.Model):
-	order_id = models.IntegerField()
+	order_id = models.IntegerField(default=100000)
 	item = models.ForeignKey(Item, on_delete=models.CASCADE)
 	count = models.PositiveIntegerField(default=0)
 
