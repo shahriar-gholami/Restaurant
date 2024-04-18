@@ -33,22 +33,24 @@ class OrderItem(models.Model):
 	def __str__(self):
 		return f'{self.item.name} - {self.count}'
 
-class OrderStatus(models.Model):
-	status = models.CharField(max_length=250)
-
-	def __str__(self):
-		return self.status
-
 class Order(models.Model):
+	order_id = models.IntegerField(default=100000)
 	items = models.ManyToManyField(OrderItem)
 	customer = models.ForeignKey(Customer, null=True, blank=True, on_delete=models.SET_NULL)
-	status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+	status = models.BooleanField(default=False)
+	category = models.CharField(max_length=250, null=True, blank=True)
+	payment_method = models.CharField(max_length=250, null=True, blank=True)
+	delivery = models.BooleanField(default=False)
+	delivery_price = models.IntegerField(default=0)
+	payment_status = models.BooleanField(default=False)
+
 	created_date = models.DateTimeField(auto_now_add = True)
 
 	def get_total_price(self):
 		total_price = 0
 		for item in self.items.all():
 			total_price = total_price + item.price * item.count
+		total_price = total_price + self.delivery_price
 		return total_price
 
 	@property

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category, Item, OrderItem, OrderStatus, Order
+from .models import Category, Item, OrderItem, Order
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -12,10 +12,6 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['item', 'count']
-
-@admin.register(OrderStatus)
-class OrderStatusAdmin(admin.ModelAdmin):
-    list_display = ['status']
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):

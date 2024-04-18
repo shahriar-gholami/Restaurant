@@ -10,3 +10,12 @@ class DynamicItemForm(forms.Form):
 # مثال استفاده:
 # ایجاد یک فرم با 20 فیلد name
 
+class NewCustomerForm(forms.Form):
+    name = forms.CharField(required=False)
+    phone_number = forms.CharField(required=False)
+    address = forms.CharField(required=False)
+
+class OrderDetailForm(forms.Form):
+    category = forms.CharField()
+    payment = forms.CharField()
+
